@@ -1,0 +1,218 @@
+/* General reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+  font-family: 'Arial', sans-serif;
+  background: url('./elzay.jpg') no-repeat center center fixed; /* Background image */
+  background-size: cover; /* Ensure the image covers the screen */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  justify-content: space-between;
+  padding: 20px 0;
+  color: #333;
+  line-height: 1.6; /* Improved readability */
+}
+
+/* Header Styling */
+.header {
+  background: rgba(154, 189, 220, 0.95); /* Semi-transparent blue background */
+  color: #fff;
+  padding: 10px 0; /* Added padding for better spacing */
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.logo {
+  width: 100px;
+  height: auto;
+  transition: transform 0.3s ease; /* Smooth hover effect */
+}
+
+.logo:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
+/* Floating Animation for 'Elzay News' */
+.navigation h1 {
+  font-size: 36px;
+  background: linear-gradient(135deg, #142752, #007BFF); /* Gradient text */
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: float 3s ease-in-out infinite;
+  margin: 0; /* Remove default margin */
+}
+
+/* Floating Animation */
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Language Dropdown Styling */
+.language-dropdown select {
+  background: #fff;
+  color: #007BFF; /* Blue text */
+  border: 1px solid #007BFF;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px; /* Slightly smaller font */
+  transition: all 0.3s ease; /* Smooth transition */
+}
+
+.language-dropdown select:hover {
+  background: #007BFF; /* Blue background on hover */
+  color: #fff; /* White text on hover */
+}
+
+/* Main Content Section */
+.main-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1; /* Take remaining space */
+  text-align: center;
+  padding: 20px; /* Added padding for better spacing */
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.95); /* Slightly more opaque white */
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Deeper shadow for emphasis */
+  border-radius: 15px; /* More rounded corners */
+  width: 100%;
+  max-width: 600px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Slight lift on hover */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25); /* Enhanced shadow on hover */
+}
+
+.card-body h2 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 15px; /* Increased spacing */
+}
+
+.card-body p {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 20px; /* Increased spacing */
+}
+
+.read-more {
+  color: #007BFF; /* Blue link */
+  text-decoration: none;
+  font-weight: bold; /* Bold text for emphasis */
+  transition: color 0.3s ease; /* Smooth color transition */
+}
+
+.read-more:hover {
+  color: #0056b3; /* Darker blue on hover */
+  text-decoration: underline;
+}
+
+/* Static Image Styling */
+.static-image {
+  display: block; /* Ensures the image behaves predictably */
+  margin: 20px auto; /* Centers the image */
+  width: 100%; /* Full width by default */
+  max-width: 300px; /* Limits the maximum width */
+  height: auto; /* Maintains aspect ratio */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.static-image:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+}
+
+/* When the image is placed inside the main content card */
+.card .static-image {
+  max-width: 80%; /* Slightly larger for card placement */
+  margin-top: 20px; /* Adds space above */
+  margin-bottom: 20px; /* Adds space below */
+}
+
+/* When the image is placed in the header */
+.header .static-image {
+  max-width: 50px; /* Smaller size for header images */
+  height: 50px; /* Fixed height for uniformity */
+}
+
+/* When the image is placed in the footer */
+.footer .static-image {
+  max-width: 80px; /* Slightly larger for footer placement */
+  height: auto; /* Maintains aspect ratio */
+  margin-top: 10px; /* Adds space above */
+}
+
+/* Footer Styling */
+.footer {
+  background: linear-gradient(135deg, #007BFF 0%, #00BFFF 100%); /* Blue gradient */
+  color: #fff;
+  text-align: center;
+  padding: 20px; /* Increased padding */
+  font-size: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1); /* Subtle top border */
+}
+
+.footer p {
+  margin: 0; /* Remove default margin */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .navigation h1 {
+    font-size: 28px; /* Smaller font for mobile */
+    margin-top: 10px; /* Added spacing */
+  }
+
+  .language-dropdown {
+    margin-top: 10px; /* Added spacing */
+  }
+
+  .card {
+    padding: 20px; /* Reduced padding for smaller screens */
+  }
+
+  .card-body h2 {
+    font-size: 24px; /* Smaller font for mobile */
+  }
+
+  .card-body p {
+    font-size: 16px; /* Smaller font for mobile */
+  }
+}
