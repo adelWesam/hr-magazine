@@ -10,7 +10,8 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the "frontend" directory
-app.use(express.static(path.join(__dirname, 'frontend')));
+const frontendPath = path.join(__dirname, '../frontend'); // Path to the frontend folder
+app.use(express.static(frontendPath));
 
 const API_KEY = 'AIzaSyB_P241hzUD1d4Mu4n8EmENzjBOzUr1Es8'; // Replace with your API key
 
@@ -34,7 +35,7 @@ app.post('/translate', async (req, res) => {
 
 // Serve the main HTML file for all routes
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+  res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
 app.listen(PORT, () => {
