@@ -14,6 +14,13 @@
       <img src="./css/el-zay-01-1.png" alt="Company Logo" class="logo">
       <nav class="navigation">
         <h1 id="header-title">HR Magazine</h1>
+        <!-- Menu -->
+        <ul class="menu">
+          <li><a href="#" data-target="staff-news">Staff & Company News</a></li>
+          <li><a href="#" data-target="hr-policy">HR Circulation & Policy</a></li>
+          <li><a href="#" data-target="staff-spotlight">Staff & Company Spotlight</a></li>
+          <li><a href="#" data-target="quote-of-the-day">Quote of the Day</a></li>
+        </ul>
       </nav>
       <div id="google_translate_element"></div>
     </div>
@@ -21,10 +28,38 @@
 
   <!-- Main Content Section -->
   <main class="main-content">
-    <section class="card">
-      <div class="card-body">
-        <p id="breaking-news-summary">Good people bring out the good in others.</p>
-        <img src="./css/الاشخاص الطيبون.jpg" alt="Static Description" class="static-image">
+    <!-- Staff & Company News Section -->
+    <section id="staff-news" class="category">
+      <h2>Staff & Company News</h2>
+      <div class="news-item">
+        <p>Exciting updates about our staff and company events.</p>
+        <a href="#" class="read-more">Read more</a>
+      </div>
+    </section>
+
+    <!-- HR Circulation & Policy Section -->
+    <section id="hr-policy" class="category">
+      <h2>HR Circulation & Policy</h2>
+      <div class="news-item">
+        <p>Latest HR policies and circulation updates.</p>
+        <a href="#" class="read-more">Read more</a>
+      </div>
+    </section>
+
+    <!-- Staff & Company Spotlight Section -->
+    <section id="staff-spotlight" class="category">
+      <h2>Staff & Company Spotlight</h2>
+      <div class="news-item">
+        <p>Highlighting our amazing staff and company achievements.</p>
+        <a href="#" class="read-more">Read more</a>
+      </div>
+    </section>
+
+    <!-- Quote of the Day Section -->
+    <section id="quote-of-the-day" class="category">
+      <h2>Quote of the Day</h2>
+      <div class="news-item">
+        <p>"Good people bring out the good in others."</p>
       </div>
     </section>
   </main>
@@ -44,5 +79,42 @@
     }
   </script>
   <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+  <!-- JavaScript for Dynamic Content -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const menuLinks = document.querySelectorAll('.menu a');
+      const categories = document.querySelectorAll('.category');
+
+      // Hide all categories initially
+      categories.forEach(category => {
+        category.style.display = 'none';
+      });
+
+      // Show the first category by default
+      if (categories.length > 0) {
+        categories[0].style.display = 'block';
+      }
+
+      // Add click event listeners to menu links
+      menuLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+          e.preventDefault(); // Prevent default link behavior
+
+          // Hide all categories
+          categories.forEach(category => {
+            category.style.display = 'none';
+          });
+
+          // Show the selected category
+          const targetId = this.getAttribute('data-target');
+          const targetCategory = document.getElementById(targetId);
+          if (targetCategory) {
+            targetCategory.style.display = 'block';
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>

@@ -30,11 +30,21 @@ body {
 
 .header-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: space-between; /* Space out logo, navigation, and dropdown */
+  align-items: center; /* Center items vertically */
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+  gap: 20px; /* Add space between logo, navigation, and dropdown */
+}
+.navigation {
+  text-align: center; /* Center the text inside the navigation */
+}
+
+/* Language Dropdown Styling */
+.language-dropdown {
+  position: absolute; /* Position the dropdown absolutely */
+  right: 0px;
 }
 
 .logo {
@@ -70,6 +80,42 @@ body {
   }
 }
 
+/* Menu Styling */
+.menu {
+  list-style: none;
+  display: flex;
+  margin-left: 20px;
+  gap: 10px; /* Space between menu items */
+}
+
+.menu li {
+  margin: 0px;
+}
+
+.menu a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 10px 0px; /* Padding for better click area */
+  border-radius: 25px; /* Rounded corners */
+  background: linear-gradient(135deg, #007BFF, #00BFFF); /* Gradient background */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+  display: inline-block; /* Ensure padding works correctly */
+}
+
+.menu a:hover {
+  background: linear-gradient(135deg, #0056b3, #007BFF); /* Darker gradient on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+  transform: translateY(-2px); /* Slight lift on hover */
+}
+
+/* Active Menu Item */
+.menu a.active {
+  background: linear-gradient(135deg, #0056b3, #007BFF); /* Darker gradient for active state */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow for active state */
+}
+
 /* Language Dropdown Styling */
 .language-dropdown select {
   background: #fff;
@@ -90,35 +136,42 @@ body {
 /* Main Content Section */
 .main-content {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   flex: 1; /* Take remaining space */
-  text-align: center;
   padding: 20px; /* Added padding for better spacing */
 }
 
-.card {
+/* Category Section Styling */
+.category {
+  display: none;
   background: rgba(255, 255, 255, 0.95); /* Slightly more opaque white */
   padding: 30px;
+  margin: 20px 0;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Deeper shadow for emphasis */
   border-radius: 15px; /* More rounded corners */
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
 }
 
-.card:hover {
+/* Show the first category by default */
+.category:first-of-type {
+  display: block;
+}
+
+.category:hover {
   transform: translateY(-5px); /* Slight lift on hover */
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25); /* Enhanced shadow on hover */
 }
 
-.card-body h2 {
-  font-size: 28px;
+.category h2 {
+  font-size: 24px;
   color: #333;
   margin-bottom: 15px; /* Increased spacing */
 }
 
-.card-body p {
+.news-item {
   font-size: 18px;
   color: #555;
   margin-bottom: 20px; /* Increased spacing */
@@ -153,26 +206,6 @@ body {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
 }
 
-/* When the image is placed inside the main content card */
-.card .static-image {
-  max-width: 80%; /* Slightly larger for card placement */
-  margin-top: 20px; /* Adds space above */
-  margin-bottom: 20px; /* Adds space below */
-}
-
-/* When the image is placed in the header */
-.header .static-image {
-  max-width: 50px; /* Smaller size for header images */
-  height: 50px; /* Fixed height for uniformity */
-}
-
-/* When the image is placed in the footer */
-.footer .static-image {
-  max-width: 80px; /* Slightly larger for footer placement */
-  height: auto; /* Maintains aspect ratio */
-  margin-top: 10px; /* Adds space above */
-}
-
 /* Footer Styling */
 .footer {
   background: linear-gradient(135deg, #007BFF 0%, #00BFFF 100%); /* Blue gradient */
@@ -200,19 +233,28 @@ body {
     margin-top: 10px; /* Added spacing */
   }
 
+  .menu {
+    flex-direction: column; /* Stack menu items vertically on mobile */
+    margin-top: 10px;
+  }
+
+  .menu li {
+    margin: 5px 0; /* Adjust spacing for mobile */
+  }
+
   .language-dropdown {
     margin-top: 10px; /* Added spacing */
   }
 
-  .card {
+  .category {
     padding: 20px; /* Reduced padding for smaller screens */
   }
 
-  .card-body h2 {
-    font-size: 24px; /* Smaller font for mobile */
+  .category h2 {
+    font-size: 22px; /* Smaller font for mobile */
   }
 
-  .card-body p {
+  .news-item {
     font-size: 16px; /* Smaller font for mobile */
   }
 }
