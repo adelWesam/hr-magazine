@@ -9,8 +9,8 @@ const PORT = process.env.PORT || 3000; // Use Render's PORT or fallback to 3000
 app.use(cors());
 app.use(express.json());
 
-// Serve static files from the "public" directory
-app.use(express.static(path.join(__dirname, 'public')));
+// Serve static files from the "frontend" directory
+app.use(express.static(path.join(__dirname, 'frontend')));
 
 const API_KEY = 'AIzaSyB_P241hzUD1d4Mu4n8EmENzjBOzUr1Es8'; // Replace with your API key
 
@@ -34,7 +34,7 @@ app.post('/translate', async (req, res) => {
 
 // Serve the main HTML file for all routes
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
 });
 
 app.listen(PORT, () => {
