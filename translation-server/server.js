@@ -1,12 +1,16 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; // Use Render's PORT or fallback to 3000
 
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from the "public" directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 const API_KEY = 'AIzaSyB_P241hzUD1d4Mu4n8EmENzjBOzUr1Es8'; // Replace with your API key
 
@@ -26,6 +30,11 @@ app.post('/translate', async (req, res) => {
     console.error('Translation error:', error);
     res.status(500).json({ error: 'Translation failed' });
   }
+});
+
+// Serve the main HTML file for all routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.listen(PORT, () => {
