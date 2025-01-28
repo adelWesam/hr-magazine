@@ -18,7 +18,9 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
 });
-
+app.get('/add-news', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend', 'add-news.html'));
+});
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 
