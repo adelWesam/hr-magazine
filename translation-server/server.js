@@ -1,16 +1,16 @@
+require('dotenv').config();
+
 const express = require('express');
-const sql = require('mssql'); // Use mssql for SQL Server
+const sql = require('mssql');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-require('dotenv').config();
 
 app.use(cors());
 app.use(bodyParser.json());
 
-// SQL Server configuration
 const config = {
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -22,7 +22,6 @@ const config = {
   },
 };
 
-// Connect to SQL Server
 sql.connect(config, (err) => {
   if (err) {
     console.error('Error connecting to SQL Server:', err);
@@ -30,6 +29,8 @@ sql.connect(config, (err) => {
   }
   console.log('SQL Server Connected...');
 });
+
+// Your routes and other code...
 // Route to add news
 app.post('/add-news', async (req, res) => {
   const { title, content, category } = req.body;
