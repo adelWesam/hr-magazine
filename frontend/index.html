@@ -31,36 +31,25 @@
     <!-- Staff & Company News Section -->
     <section id="staff-news" class="category">
       <h2>Staff & Company News</h2>
-      <div class="news-item">
-        <p>Exciting updates about our staff and company events.</p>
-        <a href="#" class="read-more">Read more</a>
-      </div>
+      <div id="staff-news-content" class="news-content"></div>
     </section>
 
     <!-- HR Circulation & Policy Section -->
     <section id="hr-policy" class="category">
       <h2>HR Circulation & Policy</h2>
-      <div class="news-item">
-        <p>Latest HR policies and circulation updates.</p>
-        <a href="#" class="read-more">Read more</a>
-      </div>
+      <div id="hr-policy-content" class="news-content"></div>
     </section>
 
     <!-- Staff & Company Spotlight Section -->
     <section id="staff-spotlight" class="category">
       <h2>Staff & Company Spotlight</h2>
-      <div class="news-item">
-        <p>Highlighting our amazing staff and company achievements.</p>
-        <a href="#" class="read-more">Read more</a>
-      </div>
+      <div id="staff-spotlight-content" class="news-content"></div>
     </section>
 
     <!-- Quote of the Day Section -->
     <section id="quote-of-the-day" class="category">
       <h2>Quote of the Day</h2>
-      <div class="news-item">
-        <p>"Good people bring out the good in others."</p>
-      </div>
+      <div id="quote-of-the-day-content" class="news-content"></div>
     </section>
   </main>
 
@@ -94,6 +83,7 @@
       // Show the first category by default
       if (categories.length > 0) {
         categories[0].style.display = 'block';
+        loadNews(categories[0].id);
       }
 
       // Add click event listeners to menu links
@@ -111,9 +101,29 @@
           const targetCategory = document.getElementById(targetId);
           if (targetCategory) {
             targetCategory.style.display = 'block';
+            loadNews(targetId);
           }
         });
       });
+
+      function loadNews(category) {
+        fetch(`http://localhost:3001/news/${category}`)
+          .then(response => response.json())
+          .then(data => {
+            const contentDiv = document.getElementById(`${category}-content`);
+            contentDiv.innerHTML = '';
+            data.forEach(news => {
+              const newsItem = document.createElement('div');
+              newsItem.className = 'news-item';
+              newsItem.innerHTML = `
+                <h3>${news.title}</h3>
+                <p>${news.content}</p>
+              `;
+              contentDiv.appendChild(newsItem);
+            });
+          })
+          .catch(error => console.error('Error:', error));
+      }
     });
   </script>
 </body>

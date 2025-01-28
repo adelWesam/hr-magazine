@@ -1,43 +1,88 @@
 const express = require('express');
+const sql = require('mssql'); // Use mssql for SQL Server
+const bodyParser = require('body-parser');
 const cors = require('cors');
-const axios = require('axios');
-const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000; // Use Render's PORT or fallback to 3000
+const PORT = process.env.PORT || 3001;
 
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.json());
 
-// Serve static files from the "frontend" directory
-const frontendPath = path.join(__dirname, '../frontend'); // Path to the frontend folder
-app.use(express.static(frontendPath));
+// SQL Server configuration
+const config = {
+  user: 'sa',
+  password: 'sapass',
+  server: 'localhost',
+  database: 'HR News',
+  options: {
+    encrypt: false, // Disable encryption (optional)
+    trustServerCertificate: true, // For self-signed certificates
+  },
+};
 
-const API_KEY = 'AIzaSyB_P241hzUD1d4Mu4n8EmENzjBOzUr1Es8'; // Replace with your API key
+// Connect to SQL Server
+sql.connect(config, (err) => {
+  if (err) {
+    console.error('Error connecting to SQL Server:', err);
+    return;
+  }
+  console.log('SQL Server Connected...');
+});
 
-app.post('/translate', async (req, res) => {
-  const { text, targetLanguage } = req.body;
-
+// Route to add news
+app.post('/add-news', async (req, res) => {
+  const { title, content, category } = req.body;
   try {
-    const response = await axios.post(
-      `https://translation.googleapis.com/language/translate/v2?key=${API_KEY}`,
-      {
-        q: text,
-        target: targetLanguage,
-      }
-    );
-    res.json({ translatedText: response.data.data.translations[0].translatedText });
-  } catch (error) {
-    console.error('Translation error:', error);
-    res.status(500).json({ error: 'Translation failed' });
+    const request = new sql.Request();
+
+    // Log the category value
+    console.log('Category:', category);
+
+    // Step 1: Delete existing news for the category
+    const deleteQuery = 'DELETE FROM news WHERE category = @category';
+    request.input('category', sql.VarChar, category);
+    console.log('Executing delete query:', deleteQuery);
+    const deleteResult = await request.query(deleteQuery);
+
+    // Log the delete result
+    console.log('Delete Result:', deleteResult);
+
+    // Step 2: Insert the new news
+    const insertQuery = `
+      INSERT INTO news (title, content, category)
+      VALUES (@title, @content, @category)
+    `;
+    request.input('title', sql.VarChar, title);
+    request.input('content', sql.VarChar, content);
+    console.log('Executing insert query:', insertQuery);
+    const insertResult = await request.query(insertQuery);
+
+    // Log the insert result
+    console.log('Insert Result:', insertResult);
+
+    res.send('News added and replaced existing news...');
+  } catch (err) {
+    console.error('Error adding news:', err);
+    res.status(500).send('Error adding news');
   }
 });
 
-// Serve the main HTML file for all routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(frontendPath, 'index.html'));
+// Route to get news by category
+app.get('/news/:category', async (req, res) => {
+  const { category } = req.params;
+  try {
+    const request = new sql.Request();
+    const query = 'SELECT * FROM news WHERE category = @category';
+    request.input('category', sql.VarChar, category);
+    const result = await request.query(query);
+    res.send(result.recordset);
+  } catch (err) {
+    console.error('Error fetching news:', err);
+    res.status(500).send('Error fetching news');
+  }
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server started on port ${PORT}`);
 });
