@@ -109,7 +109,7 @@
       function loadNews(category) {
   console.log('Loading news for category:', category);
 
-  fetch(`http://localhost:3001/news/${category}`)
+  fetch(`https://hr-magazine.onrender.com/news/${category}`)
     .then((response) => {
       if (!response.ok) {
         console.error('Failed to fetch news:', response.statusText);
