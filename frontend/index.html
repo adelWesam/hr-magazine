@@ -107,32 +107,44 @@
       });
 
       function loadNews(category) {
-        fetch(`https://hr-magazine.onrender.com/news/${category}`)
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Failed to fetch news');
-    }
-    return response.json();
-  })
-  .then(data => {
-    const contentDiv = document.getElementById(`${category}-content`);
-    contentDiv.innerHTML = '';
-    data.forEach(news => {
-      const newsItem = document.createElement('div');
-      newsItem.className = 'news-item';
-      newsItem.innerHTML = `
-        <h3>${news.title}</h3>
-        <p>${news.content}</p>
-      `;
-      contentDiv.appendChild(newsItem);
-    });
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    const contentDiv = document.getElementById(`${category}-content`);
-    contentDiv.innerHTML = '<p>Failed to load news. Please try again later.</p>';
-  });
+  console.log('Loading news for category:', category);
+
+  fetch(`http://localhost:3001/news/${category}`)
+    .then((response) => {
+      if (!response.ok) {
+        console.error('Failed to fetch news:', response.statusText);
+        throw new Error('Failed to fetch news');
       }
+      return response.json();
+    })
+    .then((data) => {
+      console.log('Fetched news data:', data);
+
+      const contentDiv = document.getElementById(`${category}-content`);
+      contentDiv.innerHTML = '';
+
+      if (!data || data.length === 0) {
+        contentDiv.innerHTML = '<p>No news available for this category.</p>';
+        return;
+      }
+
+      data.forEach((news) => {
+        const newsItem = document.createElement('div');
+        newsItem.className = 'news-item';
+        newsItem.innerHTML = `
+          <h3>${news.title}</h3>
+          <p>${news.content}</p>
+        `;
+        contentDiv.appendChild(newsItem);
+      });
+    })
+    .catch((error) => {
+      console.error('Error while loading news:', error);
+      const contentDiv = document.getElementById(`${category}-content`);
+      contentDiv.innerHTML = '<p>Failed to load news. Please try again later.</p>';
+    });
+}
+
     });
   </script>
 </body>

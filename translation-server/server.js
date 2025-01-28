@@ -1,7 +1,6 @@
 require('dotenv').config();
-
 const express = require('express');
-const sql = require('mssql');
+const { createClient } = require('@supabase/supabase-js');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
@@ -11,56 +10,43 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(bodyParser.json());
 
-const config = {
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  server: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  options: {
-    encrypt: false,
-    trustServerCertificate: true,
-  },
-};
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
 
-sql.connect(config, (err) => {
-  if (err) {
-    console.error('Error connecting to SQL Server:', err);
-    return;
-  }
-  console.log('SQL Server Connected...');
-});
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error('Supabase URL and Key must be provided in the environment variables.');
+}
 
-// Your routes and other code...
-// Route to add news
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Add news and replace existing news in the same category
 app.post('/add-news', async (req, res) => {
   const { title, content, category } = req.body;
+
   try {
-    const request = new sql.Request();
+    // Normalize the category for consistency
+    const normalizedCategory = category.trim().toLowerCase();
 
-    // Log the category value
-    console.log('Category:', category);
+    // Delete previous news for the category
+    const { error: deleteError } = await supabase
+      .from('news')
+      .delete()
+      .eq('category', normalizedCategory);
 
-    // Step 1: Delete existing news for the category
-    const deleteQuery = 'DELETE FROM news WHERE category = @category';
-    request.input('category', sql.VarChar, category);
-    console.log('Executing delete query:', deleteQuery);
-    const deleteResult = await request.query(deleteQuery);
+    if (deleteError) {
+      console.error('Error deleting news:', deleteError);
+      return res.status(500).send('Error deleting news');
+    }
 
-    // Log the delete result
-    console.log('Delete Result:', deleteResult);
+    // Insert new news for the category
+    const { data, error: insertError } = await supabase
+      .from('news')
+      .insert([{ title, content, category: normalizedCategory }]);
 
-    // Step 2: Insert the new news
-    const insertQuery = `
-      INSERT INTO news (title, content, category)
-      VALUES (@title, @content, @category)
-    `;
-    request.input('title', sql.VarChar, title);
-    request.input('content', sql.VarChar, content);
-    console.log('Executing insert query:', insertQuery);
-    const insertResult = await request.query(insertQuery);
-
-    // Log the insert result
-    console.log('Insert Result:', insertResult);
+    if (insertError) {
+      console.error('Error inserting news:', insertError);
+      return res.status(500).send('Error inserting news');
+    }
 
     res.send('News added and replaced existing news...');
   } catch (err) {
@@ -69,15 +55,31 @@ app.post('/add-news', async (req, res) => {
   }
 });
 
-// Route to get news by category
+// Fetch news by category and return only the latest news
 app.get('/news/:category', async (req, res) => {
   const { category } = req.params;
+  console.log('Requested category:', category);
+
+  // Normalize the category for consistency
+  const normalizedCategory = category.trim().toLowerCase();
+
   try {
-    const request = new sql.Request();
-    const query = 'SELECT * FROM news WHERE category = @category';
-    request.input('category', sql.VarChar, category);
-    const result = await request.query(query);
-    res.send(result.recordset);
+    // Fetch the latest news for the given category
+    const { data, error } = await supabase
+      .from('news')
+      .select('*')
+      .eq('category', normalizedCategory)
+      .order('created_at', { ascending: false }) // Sort by created_at in descending order
+      .limit(1); // Fetch only the latest news
+
+    console.log('Fetched data:', data);
+
+    if (error) {
+      console.error('Query error:', error);
+      return res.status(500).send('Error fetching news');
+    }
+
+    res.json(data);
   } catch (err) {
     console.error('Error fetching news:', err);
     res.status(500).send('Error fetching news');

@@ -112,26 +112,28 @@
   </div>
 
   <script>
-    document.getElementById('newsForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const title = document.getElementById('title').value;
-      const content = document.getElementById('content').value;
-      const category = document.getElementById('category').value;
+   document.getElementById('newsForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const title = document.getElementById('title').value;
+  const content = document.getElementById('content').value;
+  const category = document.getElementById('category').value;
 
-      fetch('https://hr-magazine.onrender.com/add-news', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ title, content, category }),
-      })
-      .then(response => response.text())
-      .then(data => {
-        alert(data);
-        document.getElementById('newsForm').reset();
-      })
-      .catch(error => console.error('Error:', error));
-    });
+  console.log('Sending data:', { title, content, category }); // Log the data being sent
+
+  fetch('http://localhost:3001/add-news', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ title, content, category }),
+  })
+    .then((response) => response.text())
+    .then((data) => {
+      alert(data);
+      document.getElementById('newsForm').reset();
+    })
+    .catch((error) => console.error('Error:', error));
+});
   </script>
 </body>
 </html>
