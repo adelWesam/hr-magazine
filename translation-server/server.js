@@ -5,19 +5,20 @@ const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+require('dotenv').config();
 
 app.use(cors());
 app.use(bodyParser.json());
 
 // SQL Server configuration
 const config = {
-  user: 'sa',
-  password: 'sapass',
-  server: 'localhost',
-  database: 'HR News',
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  server: process.env.DB_HOST,
+  database: process.env.DB_NAME,
   options: {
-    encrypt: false, // Disable encryption (optional)
-    trustServerCertificate: true, // For self-signed certificates
+    encrypt: false,
+    trustServerCertificate: true,
   },
 };
 
@@ -29,7 +30,6 @@ sql.connect(config, (err) => {
   }
   console.log('SQL Server Connected...');
 });
-
 // Route to add news
 app.post('/add-news', async (req, res) => {
   const { title, content, category } = req.body;
