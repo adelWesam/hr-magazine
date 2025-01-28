@@ -9,6 +9,15 @@ const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(bodyParser.json());
+const path = require('path');
+
+// Serve static files from the 'frontend' folder
+app.use(express.static(path.join(__dirname, '../frontend')));
+
+// Serve the HTML files when navigating to the root route
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
+});
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
