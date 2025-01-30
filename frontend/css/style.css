@@ -8,15 +8,14 @@
 /* Body Styling */
 body {
   font-family: 'Arial', sans-serif;
-  background: url('./elzay.jpg') no-repeat center center fixed; /* Background image */
-  background-size: cover; /* Ensure the image covers the screen */
+  background: radial-gradient(circle, rgba(200, 200, 200, 1) 0%, rgba(280, 280, 280, 1) 50%, rgba(200, 200, 200, 1) 100%);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   justify-content: space-between;
   padding: 20px 0;
   color: #333;
-  line-height: 1.6; /* Improved readability */
+  line-height: 1.6;
 }
 
 /* Header Styling */
@@ -95,8 +94,9 @@ body {
 .menu a {
   color: #fff;
   text-decoration: none;
+  font-size: 12px;
   font-weight: bold;
-  padding: 10px 0px; /* Padding for better click area */
+  padding: 10px 10px; /* Padding for better click area */
   border-radius: 25px; /* Rounded corners */
   background: linear-gradient(135deg, #007BFF, #00BFFF); /* Gradient background */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
@@ -208,7 +208,7 @@ body {
 
 /* Footer Styling */
 .footer {
-  background: linear-gradient(135deg, #007BFF 0%, #00BFFF 100%); /* Blue gradient */
+  background: rgba(126, 170, 208, 0.95); /* Semi-transparent blue background */
   color: #fff;
   text-align: center;
   padding: 20px; /* Increased padding */
