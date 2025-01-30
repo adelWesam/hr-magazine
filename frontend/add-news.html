@@ -100,11 +100,14 @@
       <input type="text" id="title" name="title" required><br><br>
       <label for="content">Content:</label>
       <textarea id="content" name="content" required></textarea><br><br>
+      <label for="image">Upload Image:</label><br><br>
+<input type="file" id="image" name="image" accept="image/*"><br><br>
+
       <label for="category">Category:</label>
       <select id="category" name="category" required>
         <option value="staff-news">Staff & Company News</option>
         <option value="hr-policy">HR Circulation & Policy</option>
-        <option value="staff-spotlight">Staff & Company Spotlight</option>
+        <option value="staff-spotlight">HR Tips</option>
         <option value="quote-of-the-day">Quote of the Day</option>
       </select><br><br>
       <button type="submit">Add News</button>
@@ -114,18 +117,19 @@
   <script>
    document.getElementById('newsForm').addEventListener('submit', function (e) {
   e.preventDefault();
-  const title = document.getElementById('title').value;
-  const content = document.getElementById('content').value;
-  const category = document.getElementById('category').value;
 
-  console.log('Sending data:', { title, content, category }); // Log the data being sent
+  const formData = new FormData();
+  formData.append('title', document.getElementById('title').value);
+  formData.append('content', document.getElementById('content').value);
+  formData.append('category', document.getElementById('category').value);
+  const imageFile = document.getElementById('image').files[0];
+  if (imageFile) {
+    formData.append('image', imageFile);
+  }
 
-  fetch('https://hr-magazine.onrender.com/add-news', {
+  fetch('http://localhost:3001/add-news', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ title, content, category }),
+    body: formData,
   })
     .then((response) => response.text())
     .then((data) => {
@@ -134,6 +138,7 @@
     })
     .catch((error) => console.error('Error:', error));
 });
+
   </script>
 </body>
 </html>

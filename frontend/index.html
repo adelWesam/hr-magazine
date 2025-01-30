@@ -62,7 +62,11 @@
   <script>
     function googleTranslateElementInit() {
       new google.translate.TranslateElement(
-        { pageLanguage: 'en' },
+        {
+          pageLanguage: 'en',
+          includedLanguages: 'en,ar,hi,bn,si', // English, Arabic, Hindi, Bengali, Sinhala (Sri Lankan)
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        },
         'google_translate_element'
       );
     }
@@ -109,7 +113,7 @@
       function loadNews(category) {
   console.log('Loading news for category:', category);
 
-  fetch(`https://hr-magazine.onrender.com/news/${category}`)
+  fetch(`http://localhost:3001/news/${category}`)
     .then((response) => {
       if (!response.ok) {
         console.error('Failed to fetch news:', response.statusText);
@@ -129,14 +133,16 @@
       }
 
       data.forEach((news) => {
-        const newsItem = document.createElement('div');
-        newsItem.className = 'news-item';
-        newsItem.innerHTML = `
-          <h3>${news.title}</h3>
-          <p>${news.content}</p>
-        `;
-        contentDiv.appendChild(newsItem);
-      });
+  const newsItem = document.createElement('div');
+  newsItem.className = 'news-item';
+  newsItem.innerHTML = `
+    <h3>${news.title}</h3>
+    <p>${news.content}</p>
+    ${news.image_url ? `<img src="${news.image_url}" alt="News Image" style="max-width:100%;">` : ''}
+  `;
+  contentDiv.appendChild(newsItem);
+});
+
     })
     .catch((error) => {
       console.error('Error while loading news:', error);
